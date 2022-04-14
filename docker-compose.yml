@@ -1,0 +1,23 @@
+version: '3'
+services:
+  demo_db:
+    container_name: demo_db
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: root
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "13397:3306"
+    volumes:
+      - ./tmp/db:/var/lib/mysql
+
+  demo:
+    container_name: demo
+    build: .
+    command: bash -c "./bin/dev"
+    volumes:
+      - .:/demo
+    ports:
+      - "3000:3000"
+    depends_on:
+      - demo_db
